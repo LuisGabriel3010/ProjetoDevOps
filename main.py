@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
+from fastapi import HTTPException
 
 app = FastAPI()
 
@@ -25,8 +26,7 @@ def obter_tarefa(tarefa_id:int):
     for tarefa in tarefas:
         if tarefa.id == tarefa_id:
             return tarefa
-        else:
-            print ("Tarefa não encontrada")
+        raise HTTPException(status_code=404, detail="Não há tarefas")
 
 
 @app.put("/tarefa/{tarefa_id}" ,response_model=Tarefa)
@@ -35,8 +35,7 @@ def atualizar_tarefa(tarefa_id:int,tarefa:Tarefa):
         if t.id == tarefa_id:
             tarefas[i] = tarefa
             return tarefa
-        else
-            print("Tarefa não encontrada.")
+        raise HTTPException(status_code=404, detail="Não foi possivel atualizar tarefa")
 
 @app.delete("/tarefa/{tarefa_id}" ,response_model=Tarefa)
 def deletar_tarefa(tarefa_id:int):
@@ -44,3 +43,13 @@ def deletar_tarefa(tarefa_id:int):
         if t.id == tarefa_id:
             tarefas.pop(i)
             return {"mensagem": "Tarefa removida"}
+
+
+
+@app.get("/tarefa/concluidas",response_model=List[Tarefa])
+def listar_tarefas_concluidas(tarefa_id:int):
+    for tarefa in tarefas:
+        if tarefa.id == tarefa_id:
+            tarefa.concluida = True
+            return tarefa
+        raise HTTPException(status_code=404, detail="Não há tarefas concluídas")
