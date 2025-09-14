@@ -1,12 +1,10 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import List
 
 app = FastAPI()
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-@app.get("/teste1")
-async def root():
-    return{"message":"teste"}
+class tarefa(BaseModel):
+    id:int
+    titulo:str
+    concluida: bool = False
