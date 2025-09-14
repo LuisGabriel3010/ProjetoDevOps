@@ -16,3 +16,8 @@ def criar_tarefa(tarefa:Tarefa):
     tarefas.append(tarefa)
     return tarefa
 
+@app.get("/tarefa/",response_model=List[Tarefa])
+def listar_tarefas():
+    return tarefas
+
+
