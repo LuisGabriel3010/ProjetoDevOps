@@ -38,3 +38,9 @@ def atualizar_tarefa(tarefa_id:int,tarefa:Tarefa):
         else
             print("Tarefa não encontrada.")
 
+@app.delete("/tarefa/{tarefa_id}" ,response_model=Tarefa)
+def deletar_tarefa(tarefa_id:int):
+    for i, t  in enumerate(tarefas):
+        if t.id == tarefa_id:
+            tarefas.pop(i)
+            return {"mensagem": "Tarefa removida"}
