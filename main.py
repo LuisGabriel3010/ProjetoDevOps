@@ -20,4 +20,21 @@ def criar_tarefa(tarefa:Tarefa):
 def listar_tarefas():
     return tarefas
 
+@app.get("tarefa/{tarefa_id}" ,response_model=Tarefa)
+def obter_tarefa(tarefa_id:int):
+    for tarefa in tarefas:
+        if tarefa.id == tarefa_id:
+            return tarefa
+        else:
+            print ("Tarefa não encontrada")
+
+
+@app.put("/tarefa/{tarefa_id}" ,response_model=Tarefa)
+def atualizar_tarefa(tarefa_id:int,tarefa:Tarefa):
+    for i,t in enumerate(tarefas):
+        if t.id == tarefa_id:
+            tarefas[i] = tarefa
+            return tarefa
+        else
+            print("Tarefa não encontrada.")
 
