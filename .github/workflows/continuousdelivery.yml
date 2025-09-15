@@ -1,8 +1,10 @@
 name: Continuous Delivery
 on:
-  push:
-    branches:
-      - main
+  on:
+    workflow_run:
+      workflows: [ "Continuous Integration" ]
+      types:
+        - completed
 
 jobs:
   deliver:
