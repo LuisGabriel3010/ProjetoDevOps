@@ -10,6 +10,11 @@ class Tarefa(BaseModel):
     titulo:str
     concluida: bool = False
 
+class Usuario(BaseModel):
+    username:str
+    senha:str
+    
+
 tarefas :List[Tarefa] = []
 
 @app.post("/tarefa/",response_model=Tarefa)
