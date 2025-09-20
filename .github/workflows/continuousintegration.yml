@@ -27,11 +27,11 @@ jobs:
           linter: pylint
 
 
-    discord:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Discord Webhook Action
-          uses: tsickert/discord-webhook@v7.0.0
-          with:
-            webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-            content: "CI Finalizado"
+  discord:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Discord Webhook Action
+      uses: tsickert/discord-webhook@v7.0.0
+      with:
+        webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+        content: "CI Finalizado"
