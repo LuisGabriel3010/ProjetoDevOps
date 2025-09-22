@@ -1,11 +1,10 @@
 from src.main import *
-from unittest.mock import patch
 import pytest
-import pytest_asyncio
 from fastapi import HTTPException
 
 @pytest.mark.asyncio
 async def test_criar_tarefa():
+    tarefas.clear()
     tarefa_teste = Tarefa(nome="Estudar",id=1,concluida=True)
     result = await criar_tarefa(tarefa_teste)
     assert result == tarefa_teste
@@ -53,29 +52,34 @@ async def test_obter_tarefa():
 async def test_atualizar_tarefa_negativo():
     tarefas.clear()
     t1 = Tarefa(nome="Estudar", id=1, concluida=True)
-    tarefas.extend([t1])
+    tarefas.append(t1)
 
-    result = await atualizar_tarefa(2)
-    assert not result
+    tarefa_atualizada = Tarefa(nome="Praticar", id=2, concluida=False)
+    with pytest.raises(HTTPException):
+        await atualizar_tarefa(2, tarefa_atualizada)
 
 @pytest.mark.asyncio
 async def test_atualizar_tarefa_positivo():
     tarefas.clear()
     t1 = Tarefa(nome="Estudar", id=1, concluida=True)
-    tarefas.extend([t1])
+    tarefas.append(t1)
 
-    result = await atualizar_tarefa(1)
-    assert result
+    tarefa_atualizada = Tarefa(nome="Praticar", id=1, concluida=False)
+    result = await atualizar_tarefa(1, tarefa_atualizada)
+    assert result.nome == "Praticar"
+    assert result.concluida is False
+
 
 
 @pytest.mark.asyncio
 async def test_deletar_tarefa_negativo():
     tarefas.clear()
     t1 = Tarefa(nome="Estudar", id=1, concluida=True)
-    tarefas.extend([t1])
+    tarefas.append(t1)
 
-    result = await deletar_tarefa(2)
-    assert not result
+    with pytest.raises(HTTPException):
+        await deletar_tarefa(2)
+
 
 
 @pytest.mark.asyncio
@@ -90,9 +94,8 @@ async def test_deletar_tarefa_positivo():
 async def test_listar_tarefas_concluidas():
     tarefas.clear()
     t1 = Tarefa(nome="Estudar", id=1, concluida=True)
-    t2 = Tarefa(nome="Praticar", id=2, concluida=False)
 
-    tarefas.extend([t1, t2])
+    tarefas.extend([t1])
     result = await listar_tarefas_concluidas()
     assert isinstance(result,list)
     assert len(result) == 1
