@@ -7,7 +7,7 @@ app = FastAPI()
 
 class Tarefa(BaseModel):
     id:int
-    titulo:str
+    nome:str
     concluida: bool = False
 
 class Usuario(BaseModel):
@@ -26,7 +26,7 @@ def criar_tarefa(tarefa:Tarefa):
 def listar_tarefas():
     return tarefas
 
-@app.get("tarefa/{tarefa_id}" ,response_model=Tarefa)
+@app.get("/tarefa/{tarefa_id}" ,response_model=Tarefa)
 def obter_tarefa(tarefa_id:int):
     for tarefa in tarefas:
         if tarefa.id == tarefa_id:
